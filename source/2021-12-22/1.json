@@ -1,0 +1,101 @@
+[
+  {
+    "序号": 1,
+    "中文名称": "3,4-二甲基苯甲醛",
+    "英文名称": "3,4-Dimethyl-benzaldehyde",
+    "中文别名": "",
+    "英文别名": "3,4-DBAL",
+    "分子式": "C9H10O",
+    "CAS号或流水号": "5973-71-7"
+  },
+  {
+    "序号": 2,
+    "中文名称": "4-氨基-N-(对氨基苯基)苯磺酰胺",
+    "英文名称": "4-Amino-N-(4-aminophenyl)benzenesulphonamide",
+    "中文别名": "二氨基苯磺酰替苯胺；4,4’-二氨基苯磺酰替苯胺",
+    "英文别名": "4,4'-Diamino Sulfanilide",
+    "分子式": "C12H13N3O2S",
+    "CAS号或流水号": "16803-97-7"
+  },
+  {
+    "序号": 3,
+    "中文名称": "4-三氟甲基苯甲酸",
+    "英文名称": "4-(Trifluoromethyl)benzoic acid",
+    "中文别名": "对三氟甲基苯甲酸",
+    "英文别名": "p-Trifluoromethylbenzoic acid",
+    "分子式": "C8H5F3O2",
+    "CAS号或流水号": "455-24-3"
+  },
+  {
+    "序号": 4,
+    "中文名称": "支链C12-13烷醇2-羟基丙酸酯",
+    "英文名称": "Propanoic acid, 2-hydroxy, C12-13-branched alkyl esters",
+    "中文别名": "C12-13烷醇乳酸酯",
+    "英文别名": "C12-13 Alkyl lactate",
+    "分子式": "",
+    "CAS号或流水号": "1471312-26-1"
+  },
+  {
+    "序号": 5,
+    "中文名称": "N,N'-羰基二咪唑",
+    "英文名称": "N,N'-Carbonyldiimidazole",
+    "中文别名": "1,1'-羰基二咪唑",
+    "英文别名": "1,1'-Carbonyldiimidazole",
+    "分子式": "C7H6N4O",
+    "CAS号或流水号": "530-62-1"
+  },
+  {
+    "序号": 6,
+    "中文名称": "L-氨基丙醇",
+    "英文名称": "L-Alaninol",
+    "中文别名": "(S)-(+)-2-氨基-1-丙醇",
+    "英文别名": "(S)-(+)-2-Amino-1-propanol",
+    "分子式": "C3H9NO",
+    "CAS号或流水号": "2749-11-3"
+  },
+  {
+    "序号": 7,
+    "中文名称": "苄基缩水甘油醚",
+    "英文名称": "Benzyl glycidyl ether",
+    "中文别名": "2-(苄氧基甲基)环氧乙烷；1-苄氧基-2,3-环氧丙烷；环氧丙烷苄基醚",
+    "英文别名": "rac-Dihydrogalangal acetate；Dihydrogalangal acetate；rac-Benzyl glycidyl ether； 3-Benzyloxypropyleneoxide； 3-Benzyloxy-1,2-epoxypropane",
+    "分子式": "C10H12O2",
+    "CAS号或流水号": "2930-05-4"
+  },
+  {
+    "序号": 8,
+    "中文名称": "(3S)-3-氨基-2,3,4,5-四氢-2-氧-1H-1-苯并氮杂卓-1-乙酸-1,1-二甲基乙基酯",
+    "英文名称": "1H-1-Benzazepine-1-acetic acid, 3-amino-2,3,4,5- tetrahydro-2-oxo-,1,1- dimethylethyl ester,(3S)-",
+    "中文别名": "(S)-3-氨基-1-(叔丁氧羰甲基)-2,3,4,5-四氢-1H-苯并氮杂卓-2-酮；(S)-3-氨基-2,3,4,5-四氢-2-氧-1H-1-苯并杂卓-1-乙酸叔丁酯",
+    "英文别名": "(S)-3-Amino-1-(tert- butoxycarbonylmethyl)-2,3,4,5- tetrahydro-1H-benzazepin-2-one；(S)-3-Amino-2,3,4,5-tetrahydro-2- oxo-1H-1-benazepine-1-acetic acid 1,1-dimethyl ethyl ester",
+    "分子式": "C16H22N2O3",
+    "CAS号或流水号": "109010-60-8"
+  },
+  {
+    "序号": 9,
+    "中文名称": "4'-溴甲基联苯-2-甲酸叔丁酯",
+    "英文名称": "4'-Bromomethyl-biphenyl-2- carboxylic acid tert-butyl ester",
+    "中文别名": "4'-(溴甲基)联苯基-2-羧酸叔丁酯",
+    "英文别名": "tert-Butyl α-Bromo-2-(p-tolyl) benzoate",
+    "分子式": "C18H19BrO2",
+    "CAS号或流水号": "114772-40-6"
+  },
+  {
+    "序号": 10,
+    "中文名称": "苯基胍",
+    "英文名称": "N-Phenyl guanidine",
+    "中文别名": "",
+    "英文别名": "Phenyl guanidine",
+    "分子式": "C7H9N3",
+    "CAS号或流水号": "2002-16-6"
+  },
+  {
+    "序号": 11,
+    "中文名称": "6-溴-3-甲基-3H-二苯并[f,ij]异喹啉-2,7-二酮",
+    "英文名称": "6-Bromo-3-methyl-3H-dibenz[f,ij]isoquinoline- 2,7-dione",
+    "中文别名": "4-溴-N-甲基-1(N),9-蒽并吡啶酮",
+    "英文别名": "3H-Naphtho[1,2,3-de]quinoline- 2,7-dione, 6-bromo-3-methyl-；4-bromo-1,9-N-methylanthrapyridone",
+    "分子式": "C17H10BrNO2",
+    "CAS号或流水号": "81-85-6"
+  }
+]

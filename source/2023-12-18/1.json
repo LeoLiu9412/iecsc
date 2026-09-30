@@ -1,0 +1,38 @@
+[
+  {
+    "序号": 1,
+    "中文名称": "4-氯二苯甲酮",
+    "英文名称": "4-Chlorobenzophenone",
+    "中文别名": "对氯二苯甲酮",
+    "英文别名": "",
+    "分子式": "C13H9ClO",
+    "CAS号或流水号": "134-85-0"
+  },
+  {
+    "序号": 2,
+    "中文名称": "1,8-萘二甲酰亚胺",
+    "英文名称": "1,8-Naphthalimide",
+    "中文别名": "1,8-萘亚胺",
+    "英文别名": "2,3-Dihydro-1H-benzo[de]isoquinoline-1,3-dione",
+    "分子式": "C12H7NO2",
+    "CAS号或流水号": "81-83-4"
+  },
+  {
+    "序号": 3,
+    "中文名称": "(2S,4S)-2-(二甲基氨基羰基)-4-巯基-1-(对硝基苄氧基羰基)-1-吡咯烷",
+    "英文名称": "(2S,4S)-2-(Dimethyl-aminocarbonyl)-4-mercapto-1-(p-nitrobenzyloxycarbonyl)-1-pyrrolidine",
+    "中文别名": "美罗培南侧链；美罗培南侧链H",
+    "英文别名": "(2S,4S)-2-Dimethylaminocarbonyl-4-mercapto-1-p-nitrobenzyloxycarbonylpyrrolidine;   (2S,4S)-1-p-nitrobenzyloxycarbonyl-2-dimethylaminocarbonylamino-4-mercapto-pyrrolidine;   4-Nitrobenzyl (2S,4S)-2-[(dimethylamino)carbonyl]-4-mercaptopyrrolidine-1-carboxylate;   Meropenem Side Chain",
+    "分子式": "C15H19N3O5S",
+    "CAS号或流水号": "96034-64-9"
+  },
+  {
+    "序号": 4,
+    "中文名称": "乙酸铈(III)水合物",
+    "英文名称": "Cerium(III) acetate hydrate",
+    "中文别名": "醋酸铈",
+    "英文别名": "",
+    "分子式": "Ce(C2H3O2)3·xH2O",
+    "CAS号或流水号": "206996-60-3"
+  }
+]
