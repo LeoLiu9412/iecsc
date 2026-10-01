@@ -33,7 +33,7 @@ const substance_table = await pdfTableReader({
   before_to_page_y_axis: 550,
   table_columns: column_range,
   line_height: 15.599,
-  each_page_y_axis_range: [0, 560],
+  each_page_y_axis_range: [120, 560],
 });
 
 tableRowValidator(substance_table);
