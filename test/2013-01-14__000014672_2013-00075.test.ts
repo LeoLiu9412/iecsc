@@ -24,6 +24,7 @@ test("first record", () => {
   expect(target_record?.kind === "chemical-substance").toBe(true);
   expect(target_record?.source.file_name).toBe("中国现有化学物质名录.pdf");
   expect(target_record?.source.file_serial_number).toBe("1");
+  expect(target_record?.source.page_number).toBe("3");
 
   const record = target_record?.record as ChemicalSubstance;
   expect(record.cas).toBe("68307-89-1");

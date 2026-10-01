@@ -1,5 +1,7 @@
 import { PDFExtract, type PDFExtractText } from "pdf.js-extract";
 
+const CJK_REGEX = /[　-〿㐀-鿿＀-￯]/;
+
 interface pdfTableReaderArgs {
   file_path: string;
   from_page: number;
@@ -9,6 +11,13 @@ interface pdfTableReaderArgs {
   each_page_y_axis_range?: [number, number];
   table_columns: Record<string | "serial_id", [number, number]>;
   line_height: number;
+}
+
+function trimColumns(columns: Record<string, string>) {
+  for (const key in columns) {
+    columns[key] = columns[key]!.trim();
+  }
+  return columns;
 }
 
 /**
@@ -59,13 +68,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
           args.line_height.toFixed(3);
 
       if (should_scan_next_row) {
-        temp_columns["page_number"] = page.info.num.toString();
-
-        for (const key in temp_columns) {
-          temp_columns[key] = temp_columns[key]!.trim();
-        }
-
-        rows.push(temp_columns);
+        rows.push(trimColumns(temp_columns));
         temp_columns = { ...columns_template };
       }
 
@@ -74,12 +77,27 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         args.table_columns,
       )) {
         if (item.x >= x_start && item.x <= x_end) {
-          // And " " if the item is on a new line within the same column
-          if (prev_item && prev_item?.y < item.y) {
+          // A wrapped line is joined with " ", except when the column is empty,
+          // whitespace already exists, or both sides of the break are CJK
+          const prev_text = temp_columns[key]!;
+          if (
+            prev_item &&
+            prev_item.y < item.y &&
+            prev_text.length > 0 &&
+            !/\s$/.test(prev_text) &&
+            !/^\s/.test(item.str) &&
+            !(
+              CJK_REGEX.test(prev_text.slice(-1)) &&
+              CJK_REGEX.test(item.str.charAt(0))
+            )
+          ) {
             temp_columns[key] += " ";
           }
 
-          temp_columns[key] += item.str.trim();
+          temp_columns[key] += item.str;
+
+          // a row belongs to the page where its first item appears
+          temp_columns["page_number"] ??= page.info.num.toString();
           break;
         }
       }
@@ -88,7 +106,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
     }
   }
 
-  rows.push(temp_columns);
+  rows.push(trimColumns(temp_columns));
 
   for (let i = 0; i < rows.length - 1; i++) {
     const row = rows[i]!;
@@ -105,6 +123,8 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
       if (!prev_row) continue;
 
       for (const key in row) {
+        // keep the page where the record starts
+        if (key === "page_number") continue;
         prev_row[key]! += row[key];
       }
 

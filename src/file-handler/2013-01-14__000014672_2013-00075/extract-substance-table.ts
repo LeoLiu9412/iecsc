@@ -30,7 +30,7 @@ const substance_table = await pdfTableReader({
   from_page: 3,
   after_from_page_y_axis: 164,
   to_page: 4058,
-  before_to_page_y_axis: 999,
+  before_to_page_y_axis: 550,
   table_columns: column_range,
   line_height: 15.599,
   each_page_y_axis_range: [0, 560],
@@ -47,13 +47,13 @@ const formatted_substance_table = substance_table.map((row) => {
     record: {
       cas: is_valid_cas ? row["cas"]! : "",
       serial_number: is_valid_cas ? "" : row["cas"]!,
-      name_cn: row["name_cn"]!.replace(/\s+/g, " ").trim(),
+      name_cn: row["name_cn"]!,
       name_en: row["name_en"]!,
       synonym_cn: row["synonym_cn"]?.length
-        ? row["synonym_cn"]!.split(";")
+        ? row["synonym_cn"]!.split(";").map((s) => s.trim())
         : [],
       synonym_en: row["synonym_en"]?.length
-        ? row["synonym_en"]!.split(";")
+        ? row["synonym_en"]!.split(";").map((s) => s.trim())
         : [],
       formula: row["formula"]!,
       use_control: [],
