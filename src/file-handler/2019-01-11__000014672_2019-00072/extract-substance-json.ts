@@ -4,6 +4,7 @@ import type { ChemicalSubstance, IECSC_Record } from "../../types/record.type";
 import path from "path";
 import { CONSTANTS } from "../../../constants";
 import { casValidator } from "../../utils/cas-validator";
+import { splitSynonyms } from "../../utils/split-synonyms";
 
 export interface JsonType {
   序号: number;
@@ -31,14 +32,8 @@ const source: IECSC_Record["source"] = {
 
 const formatted_records: IECSC_Record[] = json1.map((record) => {
   const is_cas_valid = casValidator(record.CAS号或流水号);
-  let synonym_cn = record.中文别名?.split(";");
-  if (synonym_cn?.length === 1 && synonym_cn[0] === "") {
-    synonym_cn = [];
-  }
-  let synonym_en = record.英文别名?.split(";");
-  if (synonym_en?.length === 1 && synonym_en[0] === "") {
-    synonym_en = [];
-  }
+  const synonym_cn = splitSynonyms(record.中文别名);
+  const synonym_en = splitSynonyms(record.英文别名);
 
   const record_to_add: IECSC_Record = {
     kind: "chemical-substance",

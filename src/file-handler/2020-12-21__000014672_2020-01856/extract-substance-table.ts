@@ -8,34 +8,35 @@ import type { IECSC_Record } from "../../types/record.type";
 import { casValidator } from "../../utils/cas-validator";
 import { splitSynonyms } from "../../utils/split-synonyms";
 
-// link: https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202005/t20200508_778159.html
+// link: https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202012/t20201224_814606.html
 
 const column_range: TableColumnRange = {
-  serial_id: [90, 125],
-  name_cn: [126, 250],
-  name_en: [252, 392],
-  synonym_cn: [394, 510],
-  synonym_en: [511, 620],
-  cas: [621, 685],
-  formula: [686, 780],
+  serial_id: [60, 90],
+  name_cn: [92, 215],
+  name_en: [217, 385],
+  synonym_cn: [387, 494],
+  synonym_en: [496, 639],
+  cas: [640, 698],
+  formula: [700, 790],
 };
 
 const input_path = path.join(
   CONSTANTS.SOURCE_FOLDER_PATH,
-  "2020-05-06__000014672_2020-00618",
-  "列入《中国现有化学物质名录》的156种符合增补要求的化学物质.pdf",
+  "2020-12-21__000014672_2020-01856",
+  "列入《中国现有化学物质名录》的238种符合增补要求的化学物质.pdf",
 );
 
 const substance_table = await pdfCenteredTableReader({
   file_path: input_path,
   from_page: 1,
-  after_from_page_y_axis: 245,
-  to_page: 22,
+  after_from_page_y_axis: 240,
+  to_page: 27,
   before_to_page_y_axis: 510,
   table_columns: column_range,
-  line_height: 13.7,
+  line_height: 11.65,
+  row_start_column: "serial_id",
   no_space_columns: ["serial_id", "formula", "cas"],
-  each_page_y_axis_range: [120, 510],
+  each_page_y_axis_range: [115, 510],
 });
 
 tableRowValidator(substance_table);
@@ -63,11 +64,11 @@ const formatted_substance_table = substance_table.map((row) => {
     },
     source: {
       publish_name: "关于增补《中国现有化学物质名录》的公告",
-      publish_date: "2020-05-06",
-      publish_serial_number: "000014672/2020-00618",
-      link: "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202005/t20200508_778159.html",
+      publish_date: "2020-12-21",
+      publish_serial_number: "000014672/2020-01856",
+      link: "https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202012/t20201224_814606.html",
       file_name:
-        "列入《中国现有化学物质名录》的156种符合增补要求的化学物质.pdf",
+        "列入《中国现有化学物质名录》的238种符合增补要求的化学物质.pdf",
       page_number: row["page_number"]!,
       file_serial_number: removeWhitespace(row["serial_id"]!),
     },
@@ -79,7 +80,7 @@ const formatted_substance_table = substance_table.map((row) => {
 await file(
   path.join(
     CONSTANTS.OUTPUT_FOLDER_PATH,
-    "2020-05-06__000014672_2020-00618",
+    "2020-12-21__000014672_2020-01856",
     "substance_table.json",
   ),
 ).write(JSON.stringify(formatted_substance_table));

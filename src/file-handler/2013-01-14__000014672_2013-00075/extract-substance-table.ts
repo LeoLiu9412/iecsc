@@ -6,6 +6,7 @@ import { CONSTANTS } from "../../../constants";
 import { file } from "bun";
 import type { IECSC_Record } from "../../types/record.type";
 import { casValidator } from "../../utils/cas-validator";
+import { splitSynonyms } from "../../utils/split-synonyms";
 
 // link: https://www.mee.gov.cn/gkml/hbb/bgg/201301/t20130131_245810.htm
 
@@ -54,12 +55,8 @@ const formatted_substance_table = substance_table.map((row) => {
       serial_number: is_valid_cas ? "" : cas,
       name_cn: row["name_cn"]!,
       name_en: row["name_en"]!,
-      synonym_cn: row["synonym_cn"]?.length
-        ? row["synonym_cn"]!.split(";").map((s) => s.trim())
-        : [],
-      synonym_en: row["synonym_en"]?.length
-        ? row["synonym_en"]!.split(";").map((s) => s.trim())
-        : [],
+      synonym_cn: splitSynonyms(row["synonym_cn"]),
+      synonym_en: splitSynonyms(row["synonym_en"]),
       formula: removeWhitespace(row["formula"]!),
       use_control: [],
       remark: "",

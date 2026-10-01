@@ -5,7 +5,7 @@ const CJK_REGEX = /[　-〿㐀-鿿＀-￯]/;
 /** A line this close to the column's right edge, without any whitespace, was broken inside a word. */
 const FORCED_WRAP_EDGE_TOLERANCE = 8;
 
-interface pdfTableReaderArgs {
+interface pdfCenteredTableReaderArgs {
   file_path: string;
   from_page: number;
   after_from_page_y_axis: number;
@@ -14,6 +14,11 @@ interface pdfTableReaderArgs {
   each_page_y_axis_range?: [number, number];
   table_columns: Record<string | "serial_id", [number, number]>;
   line_height: number;
+  /**
+   * Start a new row whenever an item shows up in this column, instead of guessing from line spacing.
+   * For tables whose cells are vertically centered, so lines of one row are not evenly spaced.
+   */
+  row_start_column?: string;
   /** Columns whose wrapped lines are joined without a space, e.g. formula or CAS number. */
   no_space_columns?: string[];
 }
@@ -41,9 +46,12 @@ function joinWrappedText(prev_text: string, next_text: string) {
 }
 
 /**
- * To extract table data from a PDF file based on specified column positions and y-axis ranges.
+ * Variant of pdfTableReader for tables whose cells may be vertically centered, or whose text has
+ * sub/superscripts, so lines are not reliably one `line_height` apart.
+ * - Line spacing is measured from the baseline, ignoring sub/superscripts a fraction of a point off it.
+ * - `row_start_column` can mark row boundaries explicitly instead of guessing from line spacing.
  */
-export async function pdfTableReader(args: pdfTableReaderArgs) {
+export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
   const pdf_extract = new PDFExtract();
 
   console.log(`Starting to process file: ${args.file_path}`);
@@ -60,6 +68,9 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
   const rows: Record<string | "serial_id", string>[] = [];
 
   let prev_item: PDFExtractText | null = null;
+
+  // y of the last baseline, ignoring sub/superscripts that sit a fraction of a point off it
+  let baseline_y = 0;
 
   // the line currently being read in each column
   let current_lines: Record<string, { text: string; end_x: number }> = {};
@@ -84,10 +95,19 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         continue;
       }
 
-      const should_scan_next_row =
-        prev_item !== null &&
-        item.x < prev_item.x &&
-        Math.abs(Math.abs(item.y - prev_item.y) - args.line_height) >= 0.2;
+      const row_start_range = args.row_start_column
+        ? args.table_columns[args.row_start_column]
+        : undefined;
+
+      const should_scan_next_row = row_start_range
+        ? Object.entries(temp_columns).some(
+            ([key, text]) => key !== "page_number" && text.trim() !== "",
+          ) &&
+          item.x >= row_start_range[0] &&
+          item.x <= row_start_range[1]
+        : prev_item !== null &&
+          item.x < prev_item.x &&
+          Math.abs(Math.abs(item.y - baseline_y) - args.line_height) >= 0.2;
 
       if (should_scan_next_row) {
         rows.push(trimColumns(temp_columns));
@@ -100,7 +120,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         args.table_columns,
       )) {
         if (item.x >= x_start && item.x <= x_end) {
-          const is_new_line = prev_item !== null && prev_item.y < item.y;
+          const is_new_line = prev_item !== null && item.y - baseline_y > 1;
           const last_line = current_lines[key];
 
           // a long word has no break opportunity, so the PDF breaks it at the column's right edge
@@ -130,6 +150,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         }
       }
 
+      if (Math.abs(item.y - baseline_y) > 1) baseline_y = item.y;
       prev_item = item;
     }
   }

@@ -6,6 +6,7 @@ import { CONSTANTS } from "../../../constants";
 import { file } from "bun";
 import type { IECSC_Record } from "../../types/record.type";
 import { casValidator } from "../../utils/cas-validator";
+import { splitSynonyms } from "../../utils/split-synonyms";
 
 // link: https://www.mee.gov.cn/gkml/hbb/bgg/201603/t20160315_332884.htm
 
@@ -58,12 +59,8 @@ const formatted_substance_table = substance_table.map((row) => {
       name_cn: row["name_cn"]!,
       // a line starting right after a line ending in a comma loses its space, e.g. "acid,1,1’-azobis-"
       name_en: row["name_en"]!.replace(/([a-z]),(?=\d)/g, "$1, "),
-      synonym_cn: row["synonym_cn"]?.length
-        ? row["synonym_cn"]!.split(";").map((s) => s.trim())
-        : [],
-      synonym_en: row["synonym_en"]?.length
-        ? row["synonym_en"]!.split(";").map((s) => s.trim())
-        : [],
+      synonym_cn: splitSynonyms(row["synonym_cn"]),
+      synonym_en: splitSynonyms(row["synonym_en"]),
       formula: removeWhitespace(row["formula"]!),
       use_control: row["category"] ? [removeWhitespace(row["category"])] : [],
       remark: row["remark"] ?? "",
