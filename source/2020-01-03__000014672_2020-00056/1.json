@@ -1,11 +1,19 @@
 [
   {
     "序号": 1,
-    "中文名称": "2,5-二氯-4-[4-[[5-[[4-氯-6-[[4-[乙烯基磺基]苯基]氨基]-1,3,5-三嗪-2-基]氨基]-2-磺基苯基]偶氮]-4,5-双氢-3-甲基-5-氧-1H-吡唑-1-基]-苯磺酸二钠盐和2,5-二氯-4-[4-[[5-[[4-氯-6-[[4-[[2-(磺酰氧基)乙基]磺酰基]苯基]氨基]-1,3,5-三嗪-2-基]氨基]-2-磺基苯基]偶氮]-4, 5-双氢-3-甲基-5-氧-1H-吡唑-1-基]-苯磺酸三钠盐的混合盐(46-61%:18-28%)",
-    "英文名称": "Benzenesulfonic acid, 2,5-dichloro-4-[4-[[5-[[4-chloro-6-[[4-[ethenylsulfonyl]phenyl]amino]-1,3,5-triazin-2-yl]amino]-2-sulfophenyl]azo]-4,5-dihydro-3-methyl-5-oxo-1H-pyrazol-1-yl]-, disodium salt and Benzenesulfonic acid, 2,5-dichloro-4-[4-[[5-[[4-chloro-6-[[4-[ethenylsulfonyl]phenyl]amino]-1,3,5-triazin-2-yl]amino]-2-sulfophenyl]azo]-4,5-dihydro-3-methyl-5-oxo-1H-pyrazol-1-yl]-, trisodium salt mixture salt(46-61%:18-28%)",
-    "分子式": "C27H20Cl3N9O9S3Na2（二钠盐）和 C27H22Cl3N9O13S4Na3（三钠盐）",
-    "CAS号或流水号": "627463-71-2（二钠盐）627463-72-3（三钠盐）",
-    "备注": ""
+    "中文名称": "2,5-二氯-4-[4-[[5-[[4-氯-6-[[4-[乙烯基磺基]苯基]氨基]-1,3,5-三嗪-2-基]氨基]-2-磺基苯基]偶氮]-4,5-双氢-3-甲基-5-氧-1H-吡唑-1-基]-苯磺酸二钠盐",
+    "英文名称": "Benzenesulfonic acid, 2,5-dichloro-4-[4-[[5-[[4-chloro-6-[[4-[ethenylsulfonyl]phenyl]amino]-1,3,5-triazin-2-yl]amino]-2-sulfophenyl]azo]-4,5-dihydro-3-methyl-5-oxo-1H-pyrazol-1-yl]-, disodium salt",
+    "分子式": "C27H20Cl3N9O9S3Na2",
+    "CAS号或流水号": "627463-71-2",
+    "备注": "二钠盐与三钠盐的混合盐(46-61%:18-28%)"
+  },
+  {
+    "序号": 1,
+    "中文名称": "2,5-二氯-4-[4-[[5-[[4-氯-6-[[4-[[2-(磺酰氧基)乙基]磺酰基]苯基]氨基]-1,3,5-三嗪-2-基]氨基]-2-磺基苯基]偶氮]-4, 5-双氢-3-甲基-5-氧-1H-吡唑-1-基]-苯磺酸三钠盐",
+    "英文名称": "Benzenesulfonic acid, 2,5-dichloro-4-[4-[[5-[[4-chloro-6-[[4-[ethenylsulfonyl]phenyl]amino]-1,3,5-triazin-2-yl]amino]-2-sulfophenyl]azo]-4,5-dihydro-3-methyl-5-oxo-1H-pyrazol-1-yl]-, trisodium salt",
+    "分子式": "C27H22Cl3N9O13S4Na3",
+    "CAS号或流水号": "627463-72-3",
+    "备注": "二钠盐与三钠盐的混合盐(46-61%:18-28%)"
   },
   {
     "序号": 2,
