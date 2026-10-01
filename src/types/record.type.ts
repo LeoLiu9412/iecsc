@@ -17,6 +17,7 @@ export type ChemicalSubstance = {
   synonym_en: string[];
   formula: string;
   use_control: string[];
+  remark: string;
 };
 
 export type ChemicalClass = {
@@ -24,6 +25,7 @@ export type ChemicalClass = {
   class_name_cn: string;
   class_name_en: string;
   use_control: string[];
+  remark: string;
 };
 
 export type IECSC_Record = {

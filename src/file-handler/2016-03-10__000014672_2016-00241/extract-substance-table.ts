@@ -7,34 +7,38 @@ import { file } from "bun";
 import type { IECSC_Record } from "../../types/record.type";
 import { casValidator } from "../../utils/cas-validator";
 
-// link: https://www.mee.gov.cn/gkml/hbb/bgg/201301/t20130131_245810.htm
+// link: https://www.mee.gov.cn/gkml/hbb/bgg/201603/t20160315_332884.htm
 
 const column_range: TableColumnRange = {
-  serial_id: [75, 102],
-  name_cn: [107, 240],
-  synonym_cn: [242, 304],
-  name_en: [313, 509],
-  synonym_en: [512, 655],
-  formula: [660, 713],
-  cas: [717, 769],
+  serial_id: [88, 105],
+  name_cn: [108, 282],
+  synonym_cn: [283, 316],
+  name_en: [316, 480],
+  synonym_en: [481, 519],
+  formula: [520, 590],
+  cas: [591, 660],
+  category: [661, 712],
+  remark: [713, 800],
 };
 
 const input_path = path.join(
   CONSTANTS.SOURCE_FOLDER_PATH,
-  "2013-01-14__000014672_2013-00075",
-  "中国现有化学物质名录.pdf",
+  "2016-03-10__000014672_2016-00241",
+  "31种符合要求的已登记新化学物质.pdf",
 );
 
 const substance_table = await pdfTableReader({
   file_path: input_path,
-  from_page: 3,
-  after_from_page_y_axis: 164,
-  to_page: 4058,
-  before_to_page_y_axis: 550,
+  from_page: 1,
+  after_from_page_y_axis: 250,
+  // the class table starts below the substance table on page 4
+  to_page: 4,
+  before_to_page_y_axis: 260,
   table_columns: column_range,
-  line_height: 15.599,
+  line_height: 13.6,
   no_space_columns: ["serial_id", "formula", "cas"],
-  each_page_y_axis_range: [120, 560],
+  // skip the repeated table header (above) and the page number (below)
+  each_page_y_axis_range: [120, 520],
 });
 
 tableRowValidator(substance_table);
@@ -46,14 +50,14 @@ const formatted_substance_table = substance_table.map((row) => {
   const cas = removeWhitespace(row["cas"]!);
   const is_valid_cas = casValidator(cas);
 
-  // format the row into an IECSC_Record object
   const record: IECSC_Record = {
     kind: "chemical-substance",
     record: {
       cas: is_valid_cas ? cas : "",
       serial_number: is_valid_cas ? "" : cas,
       name_cn: row["name_cn"]!,
-      name_en: row["name_en"]!,
+      // a line starting right after a line ending in a comma loses its space, e.g. "acid,1,1’-azobis-"
+      name_en: row["name_en"]!.replace(/([a-z]),(?=\d)/g, "$1, "),
       synonym_cn: row["synonym_cn"]?.length
         ? row["synonym_cn"]!.split(";").map((s) => s.trim())
         : [],
@@ -61,15 +65,15 @@ const formatted_substance_table = substance_table.map((row) => {
         ? row["synonym_en"]!.split(";").map((s) => s.trim())
         : [],
       formula: removeWhitespace(row["formula"]!),
-      use_control: [],
-      remark: "",
+      use_control: row["category"] ? [removeWhitespace(row["category"])] : [],
+      remark: row["remark"] ?? "",
     },
     source: {
-      publish_name: "关于发布《中国现有化学物质名录》的公告",
-      publish_date: "2013-01-14",
-      publish_serial_number: "000014672/2013-00075",
-      link: "https://www.mee.gov.cn/gkml/hbb/bgg/201301/t20130131_245810.htm",
-      file_name: "中国现有化学物质名录.pdf",
+      publish_name: "关于增补《中国现有化学物质名录》的公告",
+      publish_date: "2016-03-10",
+      publish_serial_number: "000014672/2016-00241",
+      link: "https://www.mee.gov.cn/gkml/hbb/bgg/201603/t20160315_332884.htm",
+      file_name: "31种符合要求的已登记新化学物质.pdf",
       page_number: row["page_number"]!,
       file_serial_number: removeWhitespace(row["serial_id"]!),
     },
@@ -81,7 +85,7 @@ const formatted_substance_table = substance_table.map((row) => {
 await file(
   path.join(
     CONSTANTS.OUTPUT_FOLDER_PATH,
-    "2013-01-14__000014672_2013-00075",
+    "2016-03-10__000014672_2016-00241",
     "substance_table.json",
   ),
 ).write(JSON.stringify(formatted_substance_table));
