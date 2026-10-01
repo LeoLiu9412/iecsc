@@ -103,6 +103,7 @@ export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
         ? Object.entries(temp_columns).some(
             ([key, text]) => key !== "page_number" && text.trim() !== "",
           ) &&
+          item.str.trim() !== "" &&
           item.x >= row_start_range[0] &&
           item.x <= row_start_range[1]
         : prev_item !== null &&
