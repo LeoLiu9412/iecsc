@@ -51,7 +51,7 @@ const formatted_records: IECSC_Record[] = json1.map((record) => {
       synonym_en,
       formula: record.分子式,
       remark: record.备注,
-      use_control: [record.环境管理类别],
+      use_control: record.环境管理类别 ? [record.环境管理类别] : [],
     } satisfies ChemicalSubstance,
     source: { ...source },
   };
