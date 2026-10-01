@@ -4,6 +4,7 @@ import path from "path";
 import { CONSTANTS } from "../constants";
 import type { ChemicalSubstance, IECSC_Record } from "../src/types/record.type";
 import { casValidator } from "../src/utils/cas-validator";
+import { findRecordBySerialId } from "../src/utils/find-record-by-serial-id";
 
 const output_file_path = path.join(
   CONSTANTS.OUTPUT_FOLDER_PATH,
@@ -13,14 +14,6 @@ const output_file_path = path.join(
 
 const substance_table_json: IECSC_Record[] =
   await file(output_file_path).json();
-
-const findBySerialId = (serial_id: string) => {
-  const target_record = substance_table_json.find(
-    (r) => r.source.file_serial_number === serial_id,
-  );
-  expect(target_record).toBeDefined();
-  return target_record!;
-};
 
 test("total records", () => {
   expect(substance_table_json.length).toBe(42342);
@@ -54,7 +47,7 @@ test("first record", () => {
 
 test("name_cn with Greek letters", () => {
   // 8'-阿朴-β,ψ-胡萝卜醛
-  const target_record = findBySerialId("15");
+  const target_record = findRecordBySerialId("15", substance_table_json);
   const record = target_record.record as ChemicalSubstance;
 
   expect(record.cas).toBe("1107-26-2");
@@ -66,7 +59,7 @@ test("name_cn with Greek letters", () => {
 });
 
 test("name with special symbols and full-width punctuation", () => {
-  const target_record = findBySerialId("2910");
+  const target_record = findRecordBySerialId("2910", substance_table_json);
   const record = target_record.record as ChemicalSubstance;
 
   expect(record.cas).toBe("104098-48-8");
@@ -79,11 +72,13 @@ test("name with special symbols and full-width punctuation", () => {
 });
 
 test("non-empty synonym_cn", () => {
-  const single = findBySerialId("3").record as ChemicalSubstance;
+  const single = findRecordBySerialId("3", substance_table_json)
+    .record as ChemicalSubstance;
   expect(single.name_cn).toBe("吖啶");
   expect(single.synonym_cn).toEqual(["氮蒽"]);
 
-  const multiple = findBySerialId("6").record as ChemicalSubstance;
+  const multiple = findRecordBySerialId("6", substance_table_json)
+    .record as ChemicalSubstance;
   expect(multiple.synonym_cn).toEqual([
     "α-酮戊二酸",
     "α-氧代戊二酸",
@@ -93,7 +88,8 @@ test("non-empty synonym_cn", () => {
 });
 
 test("synonym_en that wraps across several lines", () => {
-  const record = findBySerialId("31").record as ChemicalSubstance;
+  const record = findRecordBySerialId("31", substance_table_json)
+    .record as ChemicalSubstance;
 
   expect(record.synonym_en).toEqual([
     "Armoise",
@@ -111,14 +107,15 @@ test("invalid CAS number becomes serial_number", () => {
     ["4001", "3274"],
     ["4010", "7426"],
   ] as const) {
-    const record = findBySerialId(serial_id).record as ChemicalSubstance;
+    const record = findRecordBySerialId(serial_id, substance_table_json)
+      .record as ChemicalSubstance;
     expect(record.cas).toBe("");
     expect(record.serial_number).toBe(serial_number);
   }
 });
 
 test("page 450: rows without borders (serial 3999, 4000)", () => {
-  const target_3999 = findBySerialId("3999");
+  const target_3999 = findRecordBySerialId("3999", substance_table_json);
   const record_3999 = target_3999.record as ChemicalSubstance;
 
   expect(target_3999.source.page_number).toBe("450");
@@ -135,7 +132,7 @@ test("page 450: rows without borders (serial 3999, 4000)", () => {
   );
 
   // last row of the page, must not take anything from the next page
-  const target_4000 = findBySerialId("4000");
+  const target_4000 = findRecordBySerialId("4000", substance_table_json);
   const record_4000 = target_4000.record as ChemicalSubstance;
 
   expect(target_4000.source.page_number).toBe("450");
@@ -145,7 +142,7 @@ test("page 450: rows without borders (serial 3999, 4000)", () => {
 });
 
 test("page 451: first row of the page (serial 4001)", () => {
-  const target_record = findBySerialId("4001");
+  const target_record = findRecordBySerialId("4001", substance_table_json);
   const record = target_record.record as ChemicalSubstance;
 
   expect(target_record.source.page_number).toBe("451");
@@ -156,7 +153,7 @@ test("page 451: first row of the page (serial 4001)", () => {
 });
 
 test("record that continues on the next page (serial 2909)", () => {
-  const target_record = findBySerialId("2909");
+  const target_record = findRecordBySerialId("2909", substance_table_json);
   const record = target_record.record as ChemicalSubstance;
 
   expect(target_record.source.page_number).toBe("331");
@@ -215,25 +212,32 @@ test("page numbers are within range and non-decreasing", () => {
 
 test("English name broken inside a word at the column's right edge", () => {
   // 2911: "...-2" / "H-1-benzopyran..." was broken between "2" and "H"
-  const record_2911 = findBySerialId("2911").record as ChemicalSubstance;
+  const record_2911 = findRecordBySerialId("2911", substance_table_json)
+    .record as ChemicalSubstance;
   expect(record_2911.name_en).toBe(
     "3-Pyridinecarboxylic acid, 3,4-dihydro-2,5,7,8-tetramethyl-2-(4,8,12-trimethyltridecyl)-2H-1-benzopyran-6-yl ester",
   );
 
-  const record_47 = findBySerialId("47").record as ChemicalSubstance;
+  const record_47 = findRecordBySerialId("47", substance_table_json)
+    .record as ChemicalSubstance;
   expect(record_47.name_en).toContain("diimino]bis[4-hydroxy");
   expect(record_47.name_en).toEndWith("2-naphthalenesulfonate");
 
-  const record_7109 = findBySerialId("7109").record as ChemicalSubstance;
-  expect(record_7109.name_en).toContain("4-hydroxy-3-[(2-hydroxy-5-nitrophenyl)azo]");
+  const record_7109 = findRecordBySerialId("7109", substance_table_json)
+    .record as ChemicalSubstance;
+  expect(record_7109.name_en).toContain(
+    "4-hydroxy-3-[(2-hydroxy-5-nitrophenyl)azo]",
+  );
   expect(record_7109.name_en).toContain("naphthalenedisulfonato(4-)");
 
-  const record_27385 = findBySerialId("27385").record as ChemicalSubstance;
+  const record_27385 = findRecordBySerialId("27385", substance_table_json)
+    .record as ChemicalSubstance;
   expect(record_27385.name_en).toContain("trimethylcyclohexane copolymer");
 });
 
 test("synonym_en broken inside a word at the column's right edge", () => {
-  const record = findBySerialId("31964").record as ChemicalSubstance;
+  const record = findRecordBySerialId("31964", substance_table_json)
+    .record as ChemicalSubstance;
 
   expect(record.synonym_en).toEqual([
     "Benzenesulfonic acid, 2,2'-(1,2-ethenediyl)-5-[[4-bis(2-hydroxyethyl)amino-6-methoxy-1,3,5-triazin-2-yl]amino]-5'-[[6-methoxy-4-(2-sulfoethyl)amino-1,3,5-triazin-2-yl]amino]bis-, trisodium salt",
