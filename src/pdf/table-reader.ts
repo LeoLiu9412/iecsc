@@ -2,6 +2,9 @@ import { PDFExtract, type PDFExtractText } from "pdf.js-extract";
 
 const CJK_REGEX = /[　-〿㐀-鿿＀-￯]/;
 
+/** A line this close to the column's right edge, without any whitespace, was broken inside a word. */
+const FORCED_WRAP_EDGE_TOLERANCE = 8;
+
 interface pdfTableReaderArgs {
   file_path: string;
   from_page: number;
@@ -58,6 +61,9 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
 
   let prev_item: PDFExtractText | null = null;
 
+  // the line currently being read in each column
+  let current_lines: Record<string, { text: string; end_x: number }> = {};
+
   for (const page of pdf_data.pages) {
     for (const item of page.content) {
       // skip items outside the specified y-axis range on the first and last pages
@@ -86,6 +92,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
       if (should_scan_next_row) {
         rows.push(trimColumns(temp_columns));
         temp_columns = { ...columns_template };
+        current_lines = {};
       }
 
       // Arrange the item into the appropriate column based on its x-axis position
@@ -93,12 +100,29 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         args.table_columns,
       )) {
         if (item.x >= x_start && item.x <= x_end) {
+          const is_new_line = prev_item !== null && prev_item.y < item.y;
+          const last_line = current_lines[key];
+
+          // a long word has no break opportunity, so the PDF breaks it at the column's right edge
+          const is_forced_wrap =
+            is_new_line &&
+            last_line !== undefined &&
+            !/\s/.test(last_line.text.trim()) &&
+            x_end - last_line.end_x < FORCED_WRAP_EDGE_TOLERANCE;
+
           temp_columns[key] =
-            prev_item &&
-            prev_item.y < item.y &&
+            is_new_line &&
+            !is_forced_wrap &&
             !args.no_space_columns?.includes(key)
               ? joinWrappedText(temp_columns[key]!, item.str)
               : temp_columns[key] + item.str;
+
+          if (is_new_line || !last_line) {
+            current_lines[key] = { text: "", end_x: 0 };
+          }
+          const line = current_lines[key]!;
+          line.text += item.str;
+          if (item.str.trim()) line.end_x = item.x + item.width;
 
           // a row belongs to the page where its first item appears
           temp_columns["page_number"] ??= page.info.num.toString();

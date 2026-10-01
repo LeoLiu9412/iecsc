@@ -212,3 +212,30 @@ test("page numbers are within range and non-decreasing", () => {
   expect(Math.max(...pages)).toBe(4058);
   expect(pages.every((p, i) => i === 0 || p >= pages[i - 1]!)).toBe(true);
 });
+
+test("English name broken inside a word at the column's right edge", () => {
+  // 2911: "...-2" / "H-1-benzopyran..." was broken between "2" and "H"
+  const record_2911 = findBySerialId("2911").record as ChemicalSubstance;
+  expect(record_2911.name_en).toBe(
+    "3-Pyridinecarboxylic acid, 3,4-dihydro-2,5,7,8-tetramethyl-2-(4,8,12-trimethyltridecyl)-2H-1-benzopyran-6-yl ester",
+  );
+
+  const record_47 = findBySerialId("47").record as ChemicalSubstance;
+  expect(record_47.name_en).toContain("diimino]bis[4-hydroxy");
+  expect(record_47.name_en).toEndWith("2-naphthalenesulfonate");
+
+  const record_7109 = findBySerialId("7109").record as ChemicalSubstance;
+  expect(record_7109.name_en).toContain("4-hydroxy-3-[(2-hydroxy-5-nitrophenyl)azo]");
+  expect(record_7109.name_en).toContain("naphthalenedisulfonato(4-)");
+
+  const record_27385 = findBySerialId("27385").record as ChemicalSubstance;
+  expect(record_27385.name_en).toContain("trimethylcyclohexane copolymer");
+});
+
+test("synonym_en broken inside a word at the column's right edge", () => {
+  const record = findBySerialId("31964").record as ChemicalSubstance;
+
+  expect(record.synonym_en).toEqual([
+    "Benzenesulfonic acid, 2,2'-(1,2-ethenediyl)-5-[[4-bis(2-hydroxyethyl)amino-6-methoxy-1,3,5-triazin-2-yl]amino]-5'-[[6-methoxy-4-(2-sulfoethyl)amino-1,3,5-triazin-2-yl]amino]bis-, trisodium salt",
+  ]);
+});
