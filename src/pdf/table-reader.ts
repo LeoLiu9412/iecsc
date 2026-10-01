@@ -11,6 +11,8 @@ interface pdfTableReaderArgs {
   each_page_y_axis_range?: [number, number];
   table_columns: Record<string | "serial_id", [number, number]>;
   line_height: number;
+  /** Columns whose wrapped lines are joined without a space, e.g. formula or CAS number. */
+  no_space_columns?: string[];
 }
 
 function trimColumns(columns: Record<string, string>) {
@@ -18,6 +20,21 @@ function trimColumns(columns: Record<string, string>) {
     columns[key] = columns[key]!.trim();
   }
   return columns;
+}
+
+/**
+ * Join two pieces of text split by a line break.
+ */
+function joinWrappedText(prev_text: string, next_text: string) {
+  const needs_space =
+    prev_text.length > 0 &&
+    next_text.length > 0 &&
+    !/\s$/.test(prev_text) &&
+    !/^\s/.test(next_text) &&
+    !CJK_REGEX.test(prev_text.slice(-1)) &&
+    !CJK_REGEX.test(next_text.charAt(0));
+
+  return needs_space ? `${prev_text} ${next_text}` : prev_text + next_text;
 }
 
 /**
@@ -64,8 +81,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
       const should_scan_next_row =
         prev_item !== null &&
         item.x < prev_item.x &&
-        Math.abs(item.y - prev_item.y).toFixed(3) !==
-          args.line_height.toFixed(3);
+        Math.abs(Math.abs(item.y - prev_item.y) - args.line_height) >= 0.2;
 
       if (should_scan_next_row) {
         rows.push(trimColumns(temp_columns));
@@ -77,24 +93,12 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         args.table_columns,
       )) {
         if (item.x >= x_start && item.x <= x_end) {
-          // A wrapped line is joined with " ", except when the column is empty,
-          // whitespace already exists, or both sides of the break are CJK
-          const prev_text = temp_columns[key]!;
-          if (
+          temp_columns[key] =
             prev_item &&
             prev_item.y < item.y &&
-            prev_text.length > 0 &&
-            !/\s$/.test(prev_text) &&
-            !/^\s/.test(item.str) &&
-            !(
-              CJK_REGEX.test(prev_text.slice(-1)) &&
-              CJK_REGEX.test(item.str.charAt(0))
-            )
-          ) {
-            temp_columns[key] += " ";
-          }
-
-          temp_columns[key] += item.str;
+            !args.no_space_columns?.includes(key)
+              ? joinWrappedText(temp_columns[key]!, item.str)
+              : temp_columns[key] + item.str;
 
           // a row belongs to the page where its first item appears
           temp_columns["page_number"] ??= page.info.num.toString();
@@ -125,7 +129,9 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
       for (const key in row) {
         // keep the page where the record starts
         if (key === "page_number") continue;
-        prev_row[key]! += row[key];
+        prev_row[key] = args.no_space_columns?.includes(key)
+          ? prev_row[key]! + row[key]
+          : joinWrappedText(prev_row[key]!, row[key]!);
       }
 
       rows.splice(i, 1);

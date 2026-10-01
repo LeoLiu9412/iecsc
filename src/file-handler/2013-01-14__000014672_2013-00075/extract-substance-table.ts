@@ -33,20 +33,25 @@ const substance_table = await pdfTableReader({
   before_to_page_y_axis: 550,
   table_columns: column_range,
   line_height: 15.599,
+  no_space_columns: ["serial_id", "formula", "cas"],
   each_page_y_axis_range: [120, 560],
 });
 
 tableRowValidator(substance_table);
 
+// these columns never contain whitespace, any in the PDF text is a layout artifact
+const removeWhitespace = (text: string) => text.replace(/\s+/g, "");
+
 const formatted_substance_table = substance_table.map((row) => {
-  const is_valid_cas = casValidator(row["cas"]!);
+  const cas = removeWhitespace(row["cas"]!);
+  const is_valid_cas = casValidator(cas);
 
   // format the row into an IECSC_Record object
   const record: IECSC_Record = {
     kind: "chemical-substance",
     record: {
-      cas: is_valid_cas ? row["cas"]! : "",
-      serial_number: is_valid_cas ? "" : row["cas"]!,
+      cas: is_valid_cas ? cas : "",
+      serial_number: is_valid_cas ? "" : cas,
       name_cn: row["name_cn"]!,
       name_en: row["name_en"]!,
       synonym_cn: row["synonym_cn"]?.length
@@ -55,7 +60,7 @@ const formatted_substance_table = substance_table.map((row) => {
       synonym_en: row["synonym_en"]?.length
         ? row["synonym_en"]!.split(";").map((s) => s.trim())
         : [],
-      formula: row["formula"]!,
+      formula: removeWhitespace(row["formula"]!),
       use_control: [],
     },
     source: {
@@ -65,7 +70,7 @@ const formatted_substance_table = substance_table.map((row) => {
       link: "https://www.mee.gov.cn/gkml/hbb/bgg/201301/t20130131_245810.htm",
       file_name: "中国现有化学物质名录.pdf",
       page_number: row["page_number"]!,
-      file_serial_number: row["serial_id"]!,
+      file_serial_number: removeWhitespace(row["serial_id"]!),
     },
   };
 
