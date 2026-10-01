@@ -61,6 +61,9 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
 
   let prev_item: PDFExtractText | null = null;
 
+  // y of the last baseline, ignoring sub/superscripts that sit a fraction of a point off it
+  let baseline_y = 0;
+
   // the line currently being read in each column
   let current_lines: Record<string, { text: string; end_x: number }> = {};
 
@@ -87,7 +90,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
       const should_scan_next_row =
         prev_item !== null &&
         item.x < prev_item.x &&
-        Math.abs(Math.abs(item.y - prev_item.y) - args.line_height) >= 0.2;
+        Math.abs(Math.abs(item.y - baseline_y) - args.line_height) >= 0.2;
 
       if (should_scan_next_row) {
         rows.push(trimColumns(temp_columns));
@@ -130,6 +133,7 @@ export async function pdfTableReader(args: pdfTableReaderArgs) {
         }
       }
 
+      if (Math.abs(item.y - baseline_y) > 1) baseline_y = item.y;
       prev_item = item;
     }
   }
