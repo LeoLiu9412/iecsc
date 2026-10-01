@@ -1,4 +1,4 @@
-import { PDFExtract } from "pdf.js-extract";
+import { PDFExtract, type PDFExtractText } from "pdf.js-extract";
 
 interface detectedContentArgs {
   file_path: string;
@@ -16,11 +16,13 @@ export async function detectContent(args: detectedContentArgs) {
     lastPage: args.page_number,
   });
 
+  const matched_items: PDFExtractText[] = [];
+
   for (const item of pdf_data.pages[0]?.content || []) {
     if (item.str.trim().includes(args.detective_str)) {
-      return item;
+      matched_items.push(item);
     }
   }
 
-  return null;
+  return matched_items;
 }

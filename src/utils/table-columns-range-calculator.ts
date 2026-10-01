@@ -1,5 +1,8 @@
+/**
+ * It must include the "serial_id" key along with other column keys.
+ */
 export type TableColumnRange = {
-  [key: string]: [number, number];
+  [key: string | "serial_id"]: [number, number];
 };
 
 interface TableColumnsRangeCalculatorArgs {
@@ -9,9 +12,7 @@ interface TableColumnsRangeCalculatorArgs {
 }
 
 /**
- *
- * @param args
- * @returns
+ * To calculate the real-world column range based on the pixel-based column range and the axis ratio.
  */
 export function tableColumnsRangeCalculator(
   args: TableColumnsRangeCalculatorArgs,
