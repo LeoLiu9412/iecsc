@@ -6,7 +6,7 @@ import type {
 } from "../../../types/record.type";
 import path from "path";
 import { CONSTANTS } from "../../../../constants";
-import { casValidator } from "../../../utils/cas-validator";
+import { casChecksumNote, casValidator } from "../../../utils/cas-validator";
 import { splitSynonyms } from "../../../utils/split-synonyms";
 
 export interface JsonType {
@@ -33,11 +33,13 @@ const source: IECSC_Record["source"] = {
 
 const formatted_records: IECSC_Record[] = json1.map((record) => {
   const is_cas_valid = casValidator(record.CAS号或流水号);
+  const cas_note = casChecksumNote(record.CAS号或流水号);
   const synonym_cn = splitSynonyms(record.中文别名);
   const synonym_en = splitSynonyms(record.英文别名);
 
   const record_to_add: IECSC_Record = {
     kind: "chemical-substance",
+    note: cas_note,
     record: {
       cas: is_cas_valid ? record.CAS号或流水号 : "",
       serial_number: is_cas_valid ? "" : record.CAS号或流水号,

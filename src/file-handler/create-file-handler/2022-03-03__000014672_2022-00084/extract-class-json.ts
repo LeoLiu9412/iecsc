@@ -28,6 +28,7 @@ const source: IECSC_Record["source"] = {
 const formatted_records = json1.map((record) => {
   const record_to_add: IECSC_Record = {
     kind: "chemical-class",
+    note: "",
     record: {
       class_name_cn: record.中文类名,
       class_name_en: record.英文类名,

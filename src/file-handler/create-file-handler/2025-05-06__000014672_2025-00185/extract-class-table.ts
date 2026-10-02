@@ -60,6 +60,7 @@ const formatted_class_table = class_table.map((row) => {
   // format the row into an IECSC_Record object
   const record: IECSC_Record = {
     kind: "chemical-class",
+    note: row["note"] ?? "",
     record: {
       serial_number: removeWhitespace(row["serial_number"]!),
       class_name_cn: removeWhitespace(row["class_name_cn"]!),

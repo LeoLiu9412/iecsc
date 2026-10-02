@@ -17,6 +17,7 @@ interface FlattenedSubstanceRecord {
   环境管理类别: string;
   新用途环境管理范围: string;
   来源: string;
+  备注: string;
 }
 
 interface FlattenedClassRecord {
@@ -26,6 +27,7 @@ interface FlattenedClassRecord {
   环境管理类别: string;
   新用途环境管理范围: string;
   来源: string;
+  备注: string;
 }
 
 export function convertJsonToCsv(iecsc_records: IECSC_Record[]) {
@@ -47,6 +49,7 @@ export function convertJsonToCsv(iecsc_records: IECSC_Record[]) {
         环境管理类别: record.use_control.join("; "),
         新用途环境管理范围: record.remark,
         来源: iecsc_record.source.link,
+        备注: iecsc_record.note,
       };
     });
   }
@@ -61,6 +64,7 @@ export function convertJsonToCsv(iecsc_records: IECSC_Record[]) {
         环境管理类别: record.use_control.join("; "),
         新用途环境管理范围: record.remark,
         来源: iecsc_record.source.link,
+        备注: iecsc_record.note,
       };
     });
   }

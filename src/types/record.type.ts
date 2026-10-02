@@ -32,4 +32,6 @@ export type IECSC_Record = {
   kind: "chemical-substance" | "chemical-class";
   record: ChemicalSubstance | ChemicalClass;
   source: Source;
+  /** Adjustments made to the published content, or values that failed validation. Empty when none. */
+  note: string;
 };

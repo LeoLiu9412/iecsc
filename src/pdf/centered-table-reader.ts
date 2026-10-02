@@ -1,4 +1,9 @@
 import { PDFExtract, type PDFExtractText } from "pdf.js-extract";
+import {
+  fullWidthNote,
+  toHalfWidthAlphanumeric,
+} from "./full-width-alphanumeric";
+import { joinNotes } from "../utils/join-notes";
 
 const CJK_REGEX = /[　-〿㐀-鿿＀-￯]/;
 
@@ -101,7 +106,8 @@ export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
 
       const should_scan_next_row = row_start_range
         ? Object.entries(temp_columns).some(
-            ([key, text]) => key !== "page_number" && text.trim() !== "",
+            ([key, text]) =>
+              key !== "page_number" && key !== "note" && text.trim() !== "",
           ) &&
           item.str.trim() !== "" &&
           item.x >= row_start_range[0] &&
@@ -121,6 +127,14 @@ export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
         args.table_columns,
       )) {
         if (item.x >= x_start && item.x <= x_end) {
+          const { text, is_valid } = toHalfWidthAlphanumeric(item.str);
+          if (!is_valid) {
+            const note = fullWidthNote(key);
+            if (!temp_columns["note"]?.includes(note)) {
+              temp_columns["note"] = joinNotes(temp_columns["note"], note);
+            }
+          }
+
           const is_new_line = prev_item !== null && item.y - baseline_y > 1;
           const last_line = current_lines[key];
 
@@ -135,15 +149,15 @@ export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
             is_new_line &&
             !is_forced_wrap &&
             !args.no_space_columns?.includes(key)
-              ? joinWrappedText(temp_columns[key]!, item.str)
-              : temp_columns[key] + item.str;
+              ? joinWrappedText(temp_columns[key]!, text)
+              : temp_columns[key] + text;
 
           if (is_new_line || !last_line) {
             current_lines[key] = { text: "", end_x: 0 };
           }
           const line = current_lines[key]!;
-          line.text += item.str;
-          if (item.str.trim()) line.end_x = item.x + item.width;
+          line.text += text;
+          if (text.trim()) line.end_x = item.x + item.width;
 
           // a row belongs to the page where its first item appears
           temp_columns["page_number"] ??= page.info.num.toString();
@@ -175,6 +189,10 @@ export async function pdfCenteredTableReader(args: pdfCenteredTableReaderArgs) {
       for (const key in row) {
         // keep the page where the record starts
         if (key === "page_number") continue;
+        if (key === "note") {
+          prev_row[key] = joinNotes(prev_row[key], row[key]);
+          continue;
+        }
         prev_row[key] = args.no_space_columns?.includes(key)
           ? prev_row[key]! + row[key]
           : joinWrappedText(prev_row[key]!, row[key]!);

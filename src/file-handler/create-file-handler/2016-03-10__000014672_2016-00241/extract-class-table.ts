@@ -45,6 +45,7 @@ const removeWhitespace = (text: string) => text.replace(/\s+/g, "");
 const formatted_class_table = class_table.map((row) => {
   const record: IECSC_Record = {
     kind: "chemical-class",
+    note: row["note"] ?? "",
     record: {
       serial_number: removeWhitespace(row["serial_number"]!),
       class_name_cn: row["class_name_cn"]!,

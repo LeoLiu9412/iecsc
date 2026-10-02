@@ -5,7 +5,8 @@ import { tableRowValidator } from "../../../pdf/table-row-validator";
 import { CONSTANTS } from "../../../../constants";
 import { file } from "bun";
 import type { IECSC_Record } from "../../../types/record.type";
-import { casValidator } from "../../../utils/cas-validator";
+import { casChecksumNote, casValidator } from "../../../utils/cas-validator";
+import { joinNotes } from "../../../utils/join-notes";
 
 // link: https://www.mee.gov.cn/xxgk2018/xxgk/xxgk01/202212/t20221206_1006996.html
 
@@ -47,10 +48,12 @@ const removeWhitespace = (text: string) => text.replace(/\s+/g, "");
 const formatted_substance_table = substance_table.map((row) => {
   const cas = removeWhitespace(row["cas"]!);
   const is_valid_cas = casValidator(cas);
+  const cas_note = casChecksumNote(cas);
 
   // format the row into an IECSC_Record object
   const record: IECSC_Record = {
     kind: "chemical-substance",
+    note: joinNotes(row["note"], cas_note),
     record: {
       cas: is_valid_cas ? cas : "",
       serial_number: is_valid_cas ? "" : cas,

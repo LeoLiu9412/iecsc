@@ -7,7 +7,7 @@ import type {
 } from "../../../types/record.type";
 import path from "path";
 import { CONSTANTS } from "../../../../constants";
-import { casValidator } from "../../../utils/cas-validator";
+import { casChecksumNote, casValidator } from "../../../utils/cas-validator";
 
 type Json1Type = {
   序号: number;
@@ -46,9 +46,11 @@ const combined_json: IECSC_Record[] = [];
 
 for (const record of json1) {
   const is_cas_valid = casValidator(record.CAS号或流水号);
+  const cas_note = casChecksumNote(record.CAS号或流水号);
 
   const record_to_add: IECSC_Record = {
     kind: "chemical-substance",
+    note: cas_note,
     record: {
       cas: is_cas_valid ? record.CAS号或流水号 : "",
       serial_number: is_cas_valid ? "" : record.CAS号或流水号,
@@ -71,6 +73,7 @@ for (const record of json1) {
 for (const record of json3) {
   const record_to_add: IECSC_Record = {
     kind: "chemical-substance",
+    note: casChecksumNote(record.CAS号),
     record: {
       cas: record.CAS号,
       serial_number: "",

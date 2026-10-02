@@ -41,6 +41,7 @@ const source: IECSC_Record["source"] = {
 for (const record of json1) {
   const record_to_add: IECSC_Record = {
     kind: "chemical-class",
+    note: "",
     record: {
       class_name_cn: record.中文类名,
       class_name_en: record.英文类名,
@@ -59,6 +60,7 @@ for (const record of json1) {
 for (const record of json3) {
   const record_to_add: IECSC_Record = {
     kind: "chemical-class",
+    note: "",
     record: {
       class_name_cn: record.中文类名,
       class_name_en: record.英文类名,
