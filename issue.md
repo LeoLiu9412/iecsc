@@ -111,18 +111,6 @@
 | 2013-01-14__000014672_2013-00075/substance_table.json | 41378 | name_cn | ４－正丁氧基溴苯 | 全角字母/数字 | 已在读取时转为半角，并在 note 中标注（当前值为转换前） | — |
 | 2013-01-14__000014672_2013-00075/substance_table.json | 42255 | name_cn | …1R-[1α(R),２β,４aβ,８aα]… | 全角字母/数字 | 已在读取时转为半角，并在 note 中标注（当前值为转换前） | — |
 | 2013-01-14__000014672_2013-00075/substance_table.json | 42260 | name_en | Distillates(petroleum),heavythermalcracked,polymｅｒ. | 全角字母/数字 | 已在读取时转为半角，并在 note 中标注（当前值为转换前） | — |
-| 2018-11-22__000014672_2018-03437/substance_table.json | 8 | name_en | Copper, phthalic anhydride-2,3-pyridinedicarboxylic acid-urea reaction products complexes, aminosulfonyl sulfo [[2-[[4-[(3-sulfophenyl)amino]-6-[(4-sulfophenyl)amino]-1,3,5-triazin-2-yl]amino]\nethyl]amino]sulfonyl derives., sodium salts | 含换行符 | 值中混入换行符（PDF 换行未处理） | — |
-| 2018-11-22__000014672_2018-03437/substance_table.json | 9 | name_en | Diammonium 2-[[2,7-dihydro-3-methyl-2,7-dioxo-1-(3-sulfobenzoyl)-3H-naphtho\n[1,2,3-de]quinolin-6-yl]amino]-5-(hexylsulfonyl)benzenesulfonate | 含换行符 | 值中混入换行符（PDF 换行未处理） | — |
-| 2019-01-11__000014672_2019-00072/substance_table.json | 4 | name_en | Mixture of 2-(2,2,7,7-tetramethyltricyclo [6.2.1.0(1,6)]undec-5-en-5-yl propan-1-ol and  2-(2,2,7,7-tetramethyltricyclo [6.2.1.0(1,6)] undec-4-en-5-yl propan-1-ol | 多余空格 | 含连续空格或首尾空格 | — |
-| 2019-01-11__000014672_2019-00072/substance_table.json | 12 | formula | C48H31.6N14O24S4\n             ·3.5Na·2.9NH4 | 含换行符 | 值中混入换行符（PDF 换行未处理） | — |
-| 2020-01-03__000014672_2020-00056/substance_table.json | 13 | name_en | 4,11-Triphenodioxazinedisulfonic acid, 3,10-bis[(2-aminoethyl)amino]-6,13-dichloro-, reaction products with  4- [(2-chloroethyl) sulfonyl]butanoyl chloride, sodium salts | 多余空格 | 含连续空格或首尾空格 | — |
-| 2020-10-15__000014672_2020-01314/substance_table.json | 9 | name_cn | rel- (1R,3S)-3-甲基环己甲酸甲酯 [含量80-85%]  rel- (1R,3R)-3-甲基环己甲酸甲酯 [含量15-20%] | 多余空格 | 含连续空格或首尾空格 | — |
-| 2020-10-15__000014672_2020-01314/substance_table.json | 9 | name_en | Cyclohexanecarboxylic acid, 3-methyl-, methyl ester, (1R,3S)-rel-  [Range 80-85%] Cyclohexanecarboxylic acid, 3-methyl-, methyl ester, (1R,3R)-rel-  [Range 15-20%] | 多余空格 | 含连续空格或首尾空格 | — |
-| 2020-10-15__000014672_2020-01314/substance_table.json | 9 | name_cn | rel- (1R,3S)-3-甲基环己甲酸甲酯 [含量80-85%]  rel- (1R,3R)-3-甲基环己甲酸甲酯 [含量15-20%] | 多余空格 | 含连续空格或首尾空格 | — |
-| 2020-10-15__000014672_2020-01314/substance_table.json | 9 | name_en | Cyclohexanecarboxylic acid, 3-methyl-, methyl ester, (1R,3S)-rel-  [Range 80-85%] Cyclohexanecarboxylic acid, 3-methyl-, methyl ester, (1R,3R)-rel-  [Range 15-20%] | 多余空格 | 含连续空格或首尾空格 | — |
 | 2021-04-16__000014672_2021-00312/substance_table.json | 200 | cas | 12239-89-1 | CAS 校验位错误 | 校验位应为 3；PDF 原文与此一致，非提取错误，疑似源文件笔误；以官方数据为准，保留原文，已在 note 中标注 | — |
 | 2021-06-18__000014672_2021-00488/substance_table.json | 25 | cas | 374695-05-4 | CAS 校验位错误 | 校验位应为 3；PDF 原文与此一致，非提取错误，疑似源文件笔误；以官方数据为准，保留原文，已在 note 中标注 | — |
 | 2021-06-18__000014672_2021-00488/substance_table.json | 177 | cas | 49197-76-1 | CAS 校验位错误 | 校验位应为 4；PDF 原文与此一致，非提取错误，疑似源文件笔误；以官方数据为准，保留原文，已在 note 中标注 | — |
-| 2023-06-02__000014672_2023-00153/substance_table.json | 1 | name_en | Oxirane,   2-(chloromethyl)-, (2S)- | 多余空格 | 含连续空格或首尾空格 | — |
-| 2023-06-02__000014672_2023-00153/substance_table.json | 2 | name_en | Decanoic acid, 3-[[6-deoxy-2-O-(6-deoxy-α-L-mannopyranosyl)-α-L-mannopyranosyl]oxy]-,   1-(carboxymethyl)octyl ester, mixt. with 1-(carboxymethyl)octyl 3-[(6-deoxy-α-L-mannopyranosyl)oxy]decanoate | 多余空格 | 含连续空格或首尾空格 | — |
-| 2023-06-02__000014672_2023-00153/substance_table.json | 3 | name_en | Reaction mass of ditungsten carbide and tungsten   carbide | 多余空格 | 含连续空格或首尾空格 | — |
