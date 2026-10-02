@@ -4,9 +4,13 @@ import type { TableColumnRange } from "../../../utils/table-columns-range-calcul
 import { tableRowValidator } from "../../../pdf/table-row-validator";
 import { CONSTANTS } from "../../../../constants";
 import { file } from "bun";
-import type { IECSC_Record } from "../../../types/record.type";
+import type {
+  ChemicalSubstance,
+  IECSC_Record,
+} from "../../../types/record.type";
 import { casChecksumNote, casValidator } from "../../../utils/cas-validator";
 import { splitSynonyms } from "../../../utils/split-synonyms";
+import { findRecordBySerialId } from "../../../utils/find-record-by-serial-id";
 import { joinNotes } from "../../../utils/join-notes";
 
 // link: https://www.mee.gov.cn/gkml/hbb/bgg/201301/t20130131_245810.htm
@@ -77,6 +81,54 @@ const formatted_substance_table = substance_table.map((row) => {
 
   return record;
 });
+
+// U+E014 is a glyph the PDF font does not map to a character
+const MISSING_GLYPH = "\ue014";
+
+// "芪" (stilbene) is the missing glyph, as the English names say "stilbene"
+for (const serial_id of ["12312", "31655", "36367"]) {
+  const target = findRecordBySerialId(serial_id, formatted_substance_table);
+  const record = target.record as ChemicalSubstance;
+  record.name_cn = record.name_cn.replace(MISSING_GLYPH, "芪");
+  target.note = joinNotes(
+    target.note,
+    "name_cn has a missing glyph, filled in as 芪 (stilbene) according to name_en",
+  );
+}
+
+// perimidine, written as "㕷啶" (口 + 白); another record (10349) of the same PDF prints it as "白啶"
+{
+  const target = findRecordBySerialId("10411", formatted_substance_table);
+  const record = target.record as ChemicalSubstance;
+  record.name_cn = record.name_cn.replace(MISSING_GLYPH, "㕷");
+  target.note = joinNotes(
+    target.note,
+    "name_cn has a missing glyph, filled in as 㕷 (perimidine: 㕷啶) according to name_en",
+  );
+}
+
+// nothing is printed after these names in the PDF, the glyph is stray
+{
+  const target = findRecordBySerialId("31818", formatted_substance_table);
+  const record = target.record as ChemicalSubstance;
+  record.synonym_cn = record.synonym_cn.map((s) =>
+    s.replace(MISSING_GLYPH, ""),
+  );
+  target.note = joinNotes(
+    target.note,
+    "synonym_cn has a stray missing glyph at the end, removed",
+  );
+}
+
+{
+  const target = findRecordBySerialId("40437", formatted_substance_table);
+  const record = target.record as ChemicalSubstance;
+  record.name_cn = record.name_cn.replace(MISSING_GLYPH, "");
+  target.note = joinNotes(
+    target.note,
+    "name_cn has a stray missing glyph at the end, removed",
+  );
+}
 
 await file(
   path.join(
