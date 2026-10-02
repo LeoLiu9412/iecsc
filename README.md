@@ -1,4 +1,4 @@
-# IECSC Chemical Substances
+# Inventory of Existing Chemical Substances in China (IECSC)
 
 [简体中文](README_CN.md) | English
 
@@ -19,7 +19,7 @@ The original PDFs/JSON extracts of all 29 announcements (from 2013-01-14 to 2026
 [iecsc-data_2026-10-2.zip](https://github.com/LeoLiu9412/iecsc-chemical-substances/raw/main/data/iecsc-data_2026-10-2.zip) (~5 MB), containing:
 
 | File | Content | Records |
-|---|---|---|
+| --- | --- | --- |
 | `chemical-substance-table.json` / `.csv` | Chemical substances | 43,888 |
 | `chemical-class-table.json` / `.csv` | Chemical classes (substances described by a class name, e.g. polymers and reaction products) | 3,691 |
 
