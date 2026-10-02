@@ -3,6 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "gen-zip-file": "bun src/file-handler.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -10,6 +13,7 @@
     "typescript": "^7"
   },
   "dependencies": {
+    "arquero": "^8.0.3",
     "fflate": "^0.8.3",
     "pdf.js-extract": "^1.0.1"
   }

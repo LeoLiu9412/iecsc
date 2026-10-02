@@ -3,13 +3,25 @@ import { zipSync, strToU8 } from "fflate";
 import { CONSTANTS } from "../../constants";
 import { mergeExtractedData } from "./merge-extracted-data";
 import path from "path";
+import { convertJsonToCsv } from "./convert-json-to-csv";
+import type { IECSC_Record } from "../types/record.type";
+
+interface SaveMergedDataArgs {
+  merged_class_table_json: IECSC_Record[];
+  merged_substance_table_json: IECSC_Record[];
+}
 
 /**
  * Save the merged data into Json files and create zip files
  */
-export async function saveMergedData() {
-  const { merged_class_table_json, merged_substance_table_json } =
-    await mergeExtractedData();
+export async function saveMergedData({
+  merged_class_table_json,
+  merged_substance_table_json,
+}: SaveMergedDataArgs) {
+  const merged_substance_table_csv = convertJsonToCsv(
+    merged_substance_table_json,
+  );
+  const merged_class_table_csv = convertJsonToCsv(merged_class_table_json);
 
   const date = new Date();
   const formatted_date = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
@@ -21,10 +33,14 @@ export async function saveMergedData() {
   );
 
   const archive = zipSync({
-    "class_table.json": strToU8(JSON.stringify(merged_class_table_json)),
-    "substance_table.json": strToU8(
+    "chemical-class-table.json": strToU8(
+      JSON.stringify(merged_class_table_json),
+    ),
+    "chemical-substance-table.json": strToU8(
       JSON.stringify(merged_substance_table_json),
     ),
+    "chemical-class-table.csv": strToU8(merged_class_table_csv),
+    "chemical-substance-table.csv": strToU8(merged_substance_table_csv),
   });
 
   // Bun.write creates the data folder if it does not exist
