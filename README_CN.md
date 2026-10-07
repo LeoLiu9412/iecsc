@@ -14,6 +14,10 @@
 
 全部 29 份公告（2013-01-14 至 2026-08-04）的 PDF 及提取出的 JSON 保存在 [source/](source/)。
 
+## 在线查询
+
+不想下载数据？可以直接在网页上查询：**<https://search.iecsc.workers.dev/>**。
+
 ## 下载
 
 [iecsc-data_2026-10-2.zip](https://github.com/LeoLiu9412/iecsc-chemical-substances/raw/main/data/iecsc-data_2026-10-2.zip)（约 5 MB），包含：
@@ -110,3 +114,7 @@ CAS 号保持与官方原文一致，但未通过 CAS 校验位校验，因此�
 ## 免责声明
 
 本数据为非官方整理。用于法律或合规用途时，请务必以生态环境部的官方公告为准。
+
+## 许可
+
+本仓库中的代码遵循 [MIT License](license)。化学物质数据本身来自生态环境部的官方公告，本项目仅对其进行提取和合并，不对相关事实数据主张任何权利。

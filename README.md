@@ -14,6 +14,10 @@ The Ministry of Ecology and Environment of China (MEE) publishes the inventory a
 
 The original PDFs/JSON extracts of all 29 announcements (from 2013-01-14 to 2026-08-04) are kept in [source/](source/).
 
+## Web search
+
+Prefer not to download the dataset? Search it online at **<https://search.iecsc.workers.dev/>**.
+
 ## Download
 
 [iecsc-data_2026-10-2.zip](https://github.com/LeoLiu9412/iecsc-chemical-substances/raw/main/data/iecsc-data_2026-10-2.zip) (~5 MB), containing:
@@ -110,3 +114,7 @@ Known problems in the source data and the extraction are listed in [issue.md](is
 ## Disclaimer
 
 This is an unofficial compilation. For legal or compliance use, always check the official announcements from the MEE.
+
+## License
+
+The code in this repository is licensed under the [MIT License](license). The chemical substance data itself is sourced from public announcements by the MEE; this project only extracts and merges it, and claims no rights over the underlying facts.
